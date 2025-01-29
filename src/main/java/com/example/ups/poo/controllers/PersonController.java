@@ -2,6 +2,7 @@ package com.example.ups.poo.controllers;
 
 import com.example.ups.poo.dto.Person;
 import com.example.ups.poo.service.PersonService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +18,7 @@ public class PersonController {
     }
 
     @GetMapping("/get-all-people")
-    public List<Person> getAllPeolpe(){
-         return personService.getAllPeople();
+    public ResponseEntity getAllPeople() {
+        return (ResponseEntity) personService.getAllPeople();
     }
 }
