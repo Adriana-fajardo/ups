@@ -31,11 +31,24 @@ public class PersonService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
 
     }
-    public ResponseEntity createPerson(Person person) {
-        personList.add(person);
-        return ResponseEntity.status(HttpStatus.OK).body("Person Succesfully Registered");
+    //public ResponseEntity createPerson(Person person) {
+    //    personList.add(person);
+    //    return ResponseEntity.status(HttpStatus.OK).body("Person Succesfully Registered");
 
+
+    public ResponseEntity createPerson(Person person) {
+        for (Person IdPerson : personList) {
+            if (IdPerson.getId().equalsIgnoreCase(person.getId())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Person with this ID already exists.");
+            }
+        }
+        if (person.getName() == null || person.getLastname() == null || person.getAge() <= 0 || person.getId() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing required fields for person.");
+        }
+        personList.add(person);
+        return ResponseEntity.status(HttpStatus.OK).body("Person added to the list.");
     }
 }
+
 
 
