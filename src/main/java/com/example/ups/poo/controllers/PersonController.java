@@ -29,4 +29,8 @@ public class PersonController {
     public ResponseEntity createPerson(@RequestBody Person person){
         return personService.createPerson(person);
     }
+    @PutMapping("/update-person")
+    public ResponseEntity updatePerson(@RequestBody Person Person){
+        return personService.updatePerson(Person);
+    }
 }
