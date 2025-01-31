@@ -4,6 +4,7 @@ import com.example.ups.poo.dto.Person;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,29 @@ public class PersonService {
         personList.add(person);
         return ResponseEntity.status(HttpStatus.OK).body("Person added to the list.");
     }
+    public  ResponseEntity updatePerson(Person person) {
+        for (Person per : personList) {
+            if (per.getId().equalsIgnoreCase(person.getId())) {
+                //per.setName(person.getName());
+                //per.setLastname(person.getLastname());
+                //per.setAge(person.getAge());
+                //return ResponseEntity.status(HttpStatus.OK).body("person with id" + person.getId()+ " was successfully updated");
+                if (person.getName() == null) {
+                    per.setName(person.getName());
+                }
+                if (person.getLastname() == null) {
+                    per.setLastname(person.getLastname());
+                }
+                if (person.getAge() < 0) {
+                    per.setAge(person.getAge());
+                }
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("information");
+    }
 }
+
+
 
 
 
