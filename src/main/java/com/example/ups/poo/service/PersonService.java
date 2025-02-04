@@ -1,10 +1,9 @@
 package com.example.ups.poo.service;
 
-import com.example.ups.poo.dto.Person;
+import com.example.ups.poo.dto.PersonDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
 public class PersonService {
 
     //public static Object getAllPeople;
-    List<Person> personList = new ArrayList<>();
+    List<PersonDTO> personList = new ArrayList<>();
 
     public ResponseEntity getAllPeople(){
         if(personList.isEmpty()){
@@ -23,7 +22,7 @@ public class PersonService {
     }
 
     public ResponseEntity getPersonById(String id){
-        for (Person person: personList){
+        for (PersonDTO person: personList){
             if(id.equalsIgnoreCase(person.getId())){
                 return ResponseEntity.status(HttpStatus.OK).body(person);
             }
@@ -34,8 +33,8 @@ public class PersonService {
     }
 
 
-    public ResponseEntity createPerson(Person person) {
-        for (Person IdPerson : personList) {
+    public ResponseEntity createPerson(PersonDTO person) {
+        for (PersonDTO IdPerson : personList) {
             if (IdPerson.getId().equalsIgnoreCase(person.getId())) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Person with this ID already exists.");
             }
@@ -46,8 +45,8 @@ public class PersonService {
         personList.add(person);
         return ResponseEntity.status(HttpStatus.OK).body("Person added to the list.");
     }
-    public  ResponseEntity updatePerson(Person person) {
-        for (Person per : personList) {
+    public  ResponseEntity updatePerson(PersonDTO person) {
+        for (PersonDTO per : personList) {
             if (per.getId().equalsIgnoreCase(person.getId())) {
                 if (person.getName() == null) {
                     per.setName(person.getName());
@@ -67,7 +66,7 @@ public class PersonService {
         if (id != null && id.length() < 10) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Person with id:" + id + "doesn't have required lenfth (10 chars min.");
         }
-        for (Person person: personList){
+        for (PersonDTO person: personList){
             if(id.equalsIgnoreCase((person.getId()))){
                 personList.remove(person);
                 return ResponseEntity.status(HttpStatus.OK).body("Person with id: " + id + "was successfully deleted.");

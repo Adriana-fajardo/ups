@@ -1,11 +1,9 @@
 package com.example.ups.poo.controllers;
 
-import com.example.ups.poo.dto.Person;
+import com.example.ups.poo.dto.PersonDTO;
 import com.example.ups.poo.service.PersonService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 public class PersonController {
@@ -22,11 +20,11 @@ public class PersonController {
     }
 
     @PostMapping("/person")
-    public ResponseEntity createPerson(@RequestBody Person person){
+    public ResponseEntity createPerson(@RequestBody PersonDTO person){
         return personService.createPerson(person);
     }
     @PutMapping("/update-person")
-    public ResponseEntity updatePerson(@RequestBody Person Person){
+    public ResponseEntity updatePerson(@RequestBody PersonDTO Person){
         return personService.updatePerson(Person);
     }
     @GetMapping("/get-person")
