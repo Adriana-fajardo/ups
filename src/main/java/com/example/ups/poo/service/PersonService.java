@@ -32,9 +32,6 @@ public class PersonService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
 
     }
-    //public ResponseEntity createPerson(Person person) {
-    //    personList.add(person);
-    //    return ResponseEntity.status(HttpStatus.OK).body("Person Succesfully Registered");
 
 
     public ResponseEntity createPerson(Person person) {
@@ -52,10 +49,6 @@ public class PersonService {
     public  ResponseEntity updatePerson(Person person) {
         for (Person per : personList) {
             if (per.getId().equalsIgnoreCase(person.getId())) {
-                //per.setName(person.getName());
-                //per.setLastname(person.getLastname());
-                //per.setAge(person.getAge());
-                //return ResponseEntity.status(HttpStatus.OK).body("person with id" + person.getId()+ " was successfully updated");
                 if (person.getName() == null) {
                     per.setName(person.getName());
                 }
@@ -68,6 +61,20 @@ public class PersonService {
             }
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("information");
+
+    }
+    public ResponseEntity deletePersonbyid(String id) {
+        if (id != null && id.length() < 10) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Person with id:" + id + "doesn't have required lenfth (10 chars min.");
+        }
+        for (Person person: personList){
+            if(id.equalsIgnoreCase((person.getId()))){
+                personList.remove(person);
+                return ResponseEntity.status(HttpStatus.OK).body("Person with id: " + id + "was successfully deleted.");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Person with:" + id + "was not found.");
+
     }
 }
 
