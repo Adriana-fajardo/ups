@@ -21,7 +21,7 @@ public class PersonService {
         this.personRepository = personRepository;
     }
 
-    public ResponseEntity getAllPeople() {
+    public List<PersonDTO> fetchALLPeopleRecords() {
         Iterable<Person> personIterable = personRepository.findAll();
         List<PersonDTO> personDTOList = new ArrayList<>();
 
@@ -32,19 +32,43 @@ public class PersonService {
             personDTO.setId(per.getPersonId());
             personDTOList.add(personDTO);
 
+        }
+        return personDTOList;
+    }
+
+    public ResponseEntity getAllPeople(){
+        List<PersonDTO>personDTOList = fetchALLPeopleRecords();
+
+        if(personDTOList.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("PersonDTO list is Empty");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(personDTOList);
 
         }
+        public ResponseEntity getPersonById(String id) {
+            List<PersonDTO> personDTOList = fetchALLPeopleRecords();
+            for (PersonDTO personDTO : personDTOList) {
+                if (id.equalsIgnoreCase(personDTO.getId())) {
+                    return ResponseEntity.status(HttpStatus.OK).body(personDTO);
+                }
+            }
+
+            String message ="PersonDTO with id: " + id +" not found.";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+                }
+            }
+
 //        if (personDTOList.isEmpty()) {
 //            return ResponseEntity.status(HttpStatus.OK).body(personDTOList);
 //        }
 //        return ResponseEntity.status(HttpStatus.OK).body(personDTOList);
-
-        if(personDTOList.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Person List is Empty");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(personDTOList);
-    }
-}
+//
+//        if(personDTOList.isEmpty()){
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Person List is Empty");
+//        }
+//        return ResponseEntity.status(HttpStatus.OK).body(personDTOList);
+//    }
+//}
 
 //    public ResponseEntity getPersonById(String id){
 //        for (PersonDTO person: personList){
