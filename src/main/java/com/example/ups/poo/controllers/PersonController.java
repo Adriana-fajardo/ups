@@ -18,7 +18,8 @@ public class PersonController {
     @GetMapping("/get-all-people")
     public ResponseEntity getAllPeople() {
         return personService.getAllPeople();
-    }}
+    }
+}
 //
 //    @PostMapping("/person")
 //    public ResponseEntity createPerson(@RequestBody PersonDTO person){
