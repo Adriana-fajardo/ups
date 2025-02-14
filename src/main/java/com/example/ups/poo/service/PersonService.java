@@ -93,25 +93,35 @@ public class PersonService {
     }
 
     public ResponseEntity updatePerson(PersonDTO personDTO) {
-        if (personDTO == null || personDTO.getId() == null || personDTO.getId().isBlank()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Person ID is required");
-        }
-        Person person1 = mapPersonDTOtoPerson(personDTO);
         Optional<Person> personOptional = personRepository.findByPersonId(personDTO.getId());
-        if (personOptional.isPresent()) {
-
-            Person per = personOptional.get();
-            if (personDTO.getName() != null) {
-                per.setName(personDTO.getName());
-            }
-            if (personDTO.getAge() != 0) {
-                per.setAge(personDTO.getAge());
-            }
+        if (personDTO.getId() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error, insert an Id.");
         }
-        personRepository.save(person1);
-        return ResponseEntity.status(HttpStatus.OK).body("Person with Id :" + personDTO.getId() + " was successfully");
-    }
 
+        if (personOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Person with ID: " + personDTO.getId() + " was not found");
+        }
+
+        Person personToUpdate = personOptional.get();
+
+        if (personDTO.getName() != null) {
+            String[] nameArray = personDTO.getName().split(" ");
+            if (nameArray.length != 2) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error, please insert one name separated by an space.");
+            }
+            personToUpdate.setName(nameArray[0]);
+            personToUpdate.setLastname(nameArray[1]);
+        }
+
+        if (personDTO.getAge() > 0) {
+            personToUpdate.setAge(personDTO.getAge());
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insert a correct format of age.");
+        }
+
+        personRepository.save(personOptional.get());
+        return ResponseEntity.status(HttpStatus.OK).body("Person with ID: " + personDTO.getId() + " updated successfully.");
+    }
 
     public ResponseEntity deletePersonById(String id) {
         Optional<Person> personOptional = personRepository.findByPersonId(id);
@@ -154,7 +164,9 @@ public class PersonService {
         }
         return personDTOList;
     }
-    }
+}
+
+
 
 
 
